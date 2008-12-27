@@ -1,9 +1,10 @@
 AfterRender
 ===========
 
-You can use this plugin to post-process Rails templates (1.2.6; I haven't
-tried any other versions yet) have been rendered. This has not been
-thoroughly tested ... it works well enough for me at the moment.
+You can use this plugin to post-process Rails templates (originally 
+worked for 1.2.6; it's now updated for Rails 2 and only tested with Rails 
+2.1.1) have been rendered. This has not been thoroughly tested ... it 
+works well enough for me at the moment.
 
 You can use AfterRender in two ways. Either you can write your own code
 that you want to apply after rendering, or you can use the default. If
@@ -32,4 +33,4 @@ Here's the full list of values in the Hash that's passed to AFTER_RENDER:
 for the first thing in app/views that was called before the current 
 template being rendered.
 
-Tested on Rails 1.2.6 only.
+Tested on Rails 2.1.1 only.
