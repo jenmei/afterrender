@@ -42,6 +42,20 @@ QUOTE
 
     def render_file(template_path, use_full_path = true, local_assigns = {})
       rendered_template = original_render_file(template_path, use_full_path, local_assigns)
+      process_after_render(template_path, local_assigns, rendered_template)
+    end
+    
+    def execute(template)
+      rendered_template = send(template.method, template.locals) do |*names|
+        instance_variable_get "@content_for_#{names.first || 'layout'}"
+      end
+      locals = template.instance_variable_get(:@locals)
+      template_path = template.instance_variable_get(:@filename)
+      process_after_render(template_path, locals, rendered_template)
+    end
+    
+    def process_after_render(template_path, locals, rendered_template)
+      locals = {} unless locals.kind_of?(Hash)
       if defined?(AFTER_RENDER)
         parent_template_path = nil
         caller.detect {|e| 
@@ -49,7 +63,7 @@ QUOTE
             parent_template_path = p[1]
           end
         }
-        h = {:template_path => template_path, :locals => local_assigns, 
+        h = {:template_path => template_path, :locals => locals, 
              :rendered_template => rendered_template, :parent_template_path => parent_template_path}
         after_render_method.call(h)
       else
